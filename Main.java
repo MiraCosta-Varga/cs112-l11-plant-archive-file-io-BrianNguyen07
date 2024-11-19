@@ -1,35 +1,49 @@
-// TODO: Step 2 - Import file input statements here
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class Main 
-{
-	public static void main(String[] args) 
-	{
-		//TEST FOR STEP 1 (you can delete/comment this out after completing step 1)
-		Plant test = new Plant("Stinging Nettle,65,anti-inflammatory and culinary");
-		System.out.println("test plant:\n" + test + "\n\n");
+public class Main {
+    public static void main(String[] args) {
+        // Test for Step 1
+        Plant test = new Plant("Stinging Nettle,65,anti-inflammatory and culinary");
+        System.out.println("test plant:\n" + test + "\n\n");
 
+        // Step 2: Declare and initialize variables
+        ArrayList<Plant> plants = new ArrayList<>();
+        Scanner fileScanner = null;
 
-		//TODO: Step 2 - Declare + initialize variables for file input here
+        try {
+            // Step 2: Connect input stream to file
+            fileScanner = new Scanner(new FileInputStream("Forage.csv"));
 
-		
-		//TODO: Step 2 - Connect input stream to file (dont forget the try/catch!)
+            // Step 2: Loop through file lines
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
 
+                try {
+                    // Step 3: Create Plant objects and store in ArrayList
+                    Plant plant = new Plant(line);
+                    plants.add(plant);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Skipping invalid line: " + line);
+                }
+            }
 
-		//TODO: Step 2 - create loop to read through whole file
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File 'Forage.csv' not found.");
+        } finally {
+            // Step 2: Close the input stream
+            if (fileScanner != null) {
+                fileScanner.close();
+            }
+        }
 
-
-			//TODO: Step 3 - build Plant Objects and store into ArrayList
-
-
-
-		//TODO: Step 2 - close the input stream
-
-
-		//TODO: Step 3 - print contents of ArrayList
-
-	}
+        // Step 3: Print contents of ArrayList
+        System.out.println("Loaded Plants:");
+        for (Plant plant : plants) {
+            System.out.println(plant);
+            System.out.println();
+        }
+    }
 }
